@@ -1,12 +1,18 @@
 import serial
 import time
+import coder
 
-WAIT_TIME = 0.4
+WAIT_TIME = 0.1
 
 
-def open_arduino(char_lst):
+def open_arduino():
     ser = serial.Serial('COM6', 9600)  # opens communication with arduino
-    time.sleep(2)
+    time.sleep(1.6)
+    input()
+
+    char_lst = coder.coder()
+    if len(char_lst) % 2 == 1:
+        char_lst.append('\n')
 
     for char in char_lst:
         ser.flush()
@@ -17,5 +23,4 @@ def open_arduino(char_lst):
 
 
 if __name__ == '__main__':
-    char_lst = ['a', 'b', 'c', 'd','e','f','g','h']
-    open_arduino(char_lst)
+    open_arduino()
