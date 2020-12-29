@@ -10,12 +10,6 @@ from find_colors import *
 # HEIGHT = 270
 
 
-def display_image(name, image):
-    cv2.imshow(name, image)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
-
-
 def calculate_distance(x1, y1, x2, y2):
     return math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1))
 
@@ -77,14 +71,16 @@ def sort_contours(contours, cm_arr):
 
 def find_on_leds(image):
     b, g, r = cv2.split(image)
+    display_image("", image)
     LEFT_X, LEFT_Y, WIDTH, HEIGHT = find_red_spot(image)
     cut_image = r[LEFT_Y: LEFT_Y + HEIGHT, LEFT_X: LEFT_X + WIDTH]
+    display_image("", cut_image)
     arr = find_leds_positions(cut_image)
     return arr
 
 
 # unlit = cv2.imread('./imgs/unlit4.jpeg')
 # lit = cv2.imread('./imgs/lit4.jpeg')
-image = cv2.imread('./imgs/unlit4.jpeg')
+image = cv2.imread('redtop2.jpeg')
 
-find_on_leds(image)
+print(find_on_leds(image))
