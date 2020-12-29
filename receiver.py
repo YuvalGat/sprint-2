@@ -2,7 +2,7 @@ import cv2
 import time
 import multiprocessing as mp
 from sys import argv
-
+import uuid
 
 class Camera:
     def __init__(self, rtsp_url):
@@ -54,8 +54,9 @@ class Camera:
 def main():
     cam = Camera("http://" + argv[1] + ":5000/video_feed")
     fourcc = cv2.VideoWriter_fourcc(*'XVID')
-    out = cv2.VideoWriter('output.mp4', fourcc, 20.0, (640, 480))
-    print("Camera is alive?: " + str(cam.p.is_alive()))
+    file_name = uuid.uuid4()
+    out = cv2.VideoWriter(f'{file_name}.mp4', fourcc, 20.0, (640, 480))
+    print("Camera is alive?: " + str(cam.p.is_alive()) )
 
     while True:
         frame = cam.get_frame()
