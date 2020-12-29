@@ -12,35 +12,29 @@ from PIL import Image
 #         print("red")
 
 
+def find_red_spot(img):
+    img = cv.imread('imgs/redtop.jpeg')
 
+    # cv.imshow("r", img)
+    # cv.waitKey(0)
 
-img = cv.imread('imgs/lit4.jpeg')
-# img = Image.open('imgs/lit1.jpeg')
+    blue, green, red = cv.split(img)
+    red[green > 50] = 0
+    red[blue > 50] = 0
 
-cv.imshow("r", img)
-cv.waitKey(0)
-# img = cv.imread('lit1.png')
-# data = img.getdata()
+    ret, red = cv.threshold(red, 100, 255, cv.THRESH_BINARY)
+    all_contours, h = cv.findContours(red, cv.RETR_TREE, cv.CHAIN_APPROX_NONE)
+    max = []
+    for c in all_contours:
+        if len(c) > len(max):
+            max = c
+    x, y, w, h = cv.boundingRect(c)
+    M = cv.moments(c)
+    cy = int(M['m01'] / M['m00'])
+    cx = int(M['m10'] / M['m00'])
+    print((x + w / 2, y + h / 2))
+    print(cx, cy)
+    cv.rectangle(red, (x, y), (x + w, y + h), (250, 50, 50), 1)
+    cv.imshow("r", red)
+    cv.waitKey(0)
 
-# Suppress specific bands (e.g. (255, 120, 65) -> (0, 120, 0) for g)
-# r = [(d[0], 0, 0) for d in data]
-# g = [(0, d[1], 0) for d in data]
-# b = [(0, 0, d[2]) for d in data]
-# find_color_cont(img, 48, 73)
-# img = img[45:50, 70:75]
-
-
-
-blue, green, red = cv.split(img)
-# for i in range(len(red)):
-#     for j in range(len(red[0])):
-#         if green[i][j] > 50:
-#             red[i][j] = 0
-#         if blue[i][j] > 50:
-#             red[i][j] = 0
-
-red[green > 100] = 0
-red[blue > 100] = 0
-
-cv.imshow("r", red)
-cv.waitKey(0)
