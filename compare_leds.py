@@ -1,4 +1,3 @@
-import numpy as np
 import math
 
 
@@ -19,4 +18,4 @@ def compare_leds(all_lit, some_lit):
     return binary
 
 
-print(compare_leds([[0, 0], [2, 0], [4, 0], [6, 0], [8, 0]], [[0.1, -0.1], [3.9, -0.1], [8.4, -0.1]]))
+# print(compare_leds([[0, 0], [2, 0], [4, 0], [6, 0], [8, 0]], [[0.1, -0.1], [3.9, -0.1], [8.4, -0.1]]))
