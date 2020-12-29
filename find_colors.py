@@ -13,8 +13,6 @@ from PIL import Image
 
 
 def find_red_spot(img):
-    img = cv.imread('imgs/redtop.jpeg')
-
     # cv.imshow("r", img)
     # cv.waitKey(0)
 
@@ -33,8 +31,9 @@ def find_red_spot(img):
     cy = int(M['m01'] / M['m00'])
     cx = int(M['m10'] / M['m00'])
     print((x + w / 2, y + h / 2))
-    print(cx, cy)
-    cv.rectangle(red, (x, y), (x + w, y + h), (250, 50, 50), 1)
-    cv.imshow("r", red)
-    cv.waitKey(0)
+    return (cx, cy)
+    # cv.imshow("r", red)
+    # cv.waitKey(0)
 
+img = cv.imread('redtop2.jpeg')
+find_red_spot(img)
