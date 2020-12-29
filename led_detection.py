@@ -24,10 +24,7 @@ def find_leds_positions(image):
     all_contours = all_contours[1:]
     # all_contour_edges = []
     all_cm_arr = []
-    display_image("", threshed)
     for c in all_contours:
-        # x, y, w, h = cv2.boundingRect(c)
-        # all_contour_edges.append([(x, y), (x + w, y + h)])
         M = cv2.moments(c)
         cx = int(M['m10'] / M['m00'])
         cy = int(M['m01'] / M['m00'])
@@ -43,7 +40,6 @@ def find_leds_positions(image):
             cm_arr.append(all_cm_arr[i])
             i += 1
     with_color = cv2.cvtColor(threshed, cv2.COLOR_GRAY2BGR)
-
     chosen_cont = []
     chosen_cm_arr = []
     for i in range(len(contours)):
@@ -62,8 +58,6 @@ def find_leds_positions(image):
     for c in contours:
         x, y, w, h = cv2.boundingRect(c)
         cv2.rectangle(with_color, (x, y), (x + w, y + h), (250, 50, 50), 1)
-    print(chosen_cm_arr)
-    display_image("", with_color)
     return chosen_cm_arr
 
 
@@ -79,20 +73,15 @@ def sort_contours(contours, cm_arr):
     return
 
 
-unlit = cv2.imread('./imgs/unlit4.jpeg')
-lit = cv2.imread('./imgs/lit4.jpeg')
-display_image("", lit)
-
-b, g, r = cv2.split(unlit)
-# display_image("", b)
-# display_image("", g)
-# display_image("", r)
+def find_on_leds(image):
+    b, g, r = cv2.split(image)
+    cut_image = r[LEFT_Y: LEFT_Y + HEIGHT, LEFT_X: LEFT_X + WIDTH]
+    arr = find_leds_positions(cut_image)
+    return arr
 
 
-cut_unlit = r[LEFT_Y: LEFT_Y + HEIGHT, LEFT_X: LEFT_X + WIDTH]
-cut_lit = r[LEFT_Y: LEFT_Y + HEIGHT, LEFT_X: LEFT_X + WIDTH]
-# display_image("", cut_unlit)
-display_image("", cut_lit)
-# gray_cut_lit = cv2.cvtColor(cut_lit, cv2.COLOR_BGR2GRAY)
+# unlit = cv2.imread('./imgs/unlit4.jpeg')
+# lit = cv2.imread('./imgs/lit4.jpeg')
+image = cv2.imread('./imgs/unlit4.jpeg')
 
-find_leds_positions(cut_unlit)
+find_on_leds(image)
