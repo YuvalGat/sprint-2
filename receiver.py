@@ -3,6 +3,7 @@ import time
 import multiprocessing as mp
 from sys import argv
 import uuid
+import numpy as np
 
 class Camera:
     def __init__(self, rtsp_url):
@@ -56,10 +57,22 @@ def main():
     fourcc = cv2.VideoWriter_fourcc(*'XVID')
     file_name = uuid.uuid4()
     out = cv2.VideoWriter(f'{file_name}.mp4', fourcc, 20.0, (640, 480))
-    print("Camera is alive?: " + str(cam.p.is_alive()) )
+    # led_coords = []
+    # top_led_coord = sorted(led_coords, key=lambda x: x[1])[0]
+    print("Camera is alive?: " + str(cam.p.is_alive()))
 
+    top_led_on = False
     while True:
         frame = cam.get_frame()
+        # top_led = frame[top_led_coord[0] - 10: top_led_coord[0] + 10, top_led_coord[1] - 10: top_led_coord[1] + 10]
+        b, g, r = cv2.split(frame)
+        cv2.imshow("", b)
+        cv2.imshow("", g)
+        cv2.imshow("", r)
+        if np.average(r) > 200 and np.average(g) + np.average(b) < 80:
+            top_led_on = True
+        else:
+            top_led_on = False
         out.write(frame)
         cv2.imshow("Feed", frame)
         key = cv2.waitKey(1)
