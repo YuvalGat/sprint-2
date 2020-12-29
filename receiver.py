@@ -56,18 +56,14 @@ def main():
 
     print("Camera is alive?: " + str(cam.p.is_alive()))
 
-    while (1):
+    while True:
         frame = cam.get_frame()
-
         cv2.imshow("Feed", frame)
-
         key = cv2.waitKey(1)
-
         if key == 13:  # 13 is the Enter Key
             break
 
     cv2.destroyAllWindows()
-
     cam.end()
 
 
