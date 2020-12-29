@@ -53,11 +53,13 @@ class Camera:
 
 def main():
     cam = Camera("http://" + argv[1] + ":5000/video_feed")
-
+    fourcc = cv2.VideoWriter_fourcc(*'XVID')
+    out = cv2.VideoWriter('output.mp4', fourcc, 20.0, (640, 480))
     print("Camera is alive?: " + str(cam.p.is_alive()))
 
     while True:
         frame = cam.get_frame()
+        out.write(frame)
         cv2.imshow("Feed", frame)
         key = cv2.waitKey(1)
         if key == 13:  # 13 is the Enter Key
@@ -65,6 +67,7 @@ def main():
 
     cv2.destroyAllWindows()
     cam.end()
+    out.release()
 
 
 if __name__ == '__main__':
