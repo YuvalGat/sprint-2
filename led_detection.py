@@ -1,11 +1,11 @@
 import cv2
 import math
 
-#420, 520, 200, 200
-LEFT_X = 260
-LEFT_Y = 80
-WIDTH = 200
-HEIGHT = 200
+# 420, 520, 200, 200
+LEFT_X = 370
+LEFT_Y = 630
+WIDTH = 220
+HEIGHT = 270
 
 
 def display_image(name, image):
@@ -83,16 +83,16 @@ unlit = cv2.imread('./imgs/unlit4.jpeg')
 lit = cv2.imread('./imgs/lit4.jpeg')
 display_image("", lit)
 
-b,g,r = cv2.split(lit)
-#display_image("", b)
-#display_image("", g)
-#display_image("", r)
+b, g, r = cv2.split(unlit)
+# display_image("", b)
+# display_image("", g)
+# display_image("", r)
 
 
-cut_unlit = unlit[LEFT_Y: LEFT_Y + HEIGHT, LEFT_X: LEFT_X + WIDTH]
+cut_unlit = r[LEFT_Y: LEFT_Y + HEIGHT, LEFT_X: LEFT_X + WIDTH]
 cut_lit = r[LEFT_Y: LEFT_Y + HEIGHT, LEFT_X: LEFT_X + WIDTH]
-#display_image("", cut_unlit)
+# display_image("", cut_unlit)
 display_image("", cut_lit)
-#gray_cut_lit = cv2.cvtColor(cut_lit, cv2.COLOR_BGR2GRAY)
+# gray_cut_lit = cv2.cvtColor(cut_lit, cv2.COLOR_BGR2GRAY)
 
-find_leds_positions(cut_lit)
+find_leds_positions(cut_unlit)
