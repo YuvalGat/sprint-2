@@ -1,10 +1,11 @@
 import cv2
 import math
 
-LOWER_LEFT_X = 250
-LOWER_LEFT_Y = 100
-WIDTH = 300
-HEIGHT = 300
+#420, 520, 200, 200
+LEFT_X = 260
+LEFT_Y = 80
+WIDTH = 200
+HEIGHT = 200
 
 
 def display_image(name, image):
@@ -17,17 +18,13 @@ def calculate_distance(x1, y1, x2, y2):
     return math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1))
 
 
-unlit = cv2.imread('./imgs/unlit2.jpeg')
-lit = cv2.imread('./imgs/lit2.jpeg')
-
-
 def find_leds_positions(image):
-    ret, threshed = cv2.threshold(image, 240, 255, cv2.THRESH_BINARY_INV)
+    ret, threshed = cv2.threshold(image, 245, 255, cv2.THRESH_BINARY_INV)
     all_contours, h = cv2.findContours(threshed, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
     all_contours = all_contours[1:]
     # all_contour_edges = []
     all_cm_arr = []
-    # display_image("", threshed)
+    display_image("", threshed)
     for c in all_contours:
         # x, y, w, h = cv2.boundingRect(c)
         # all_contour_edges.append([(x, y), (x + w, y + h)])
@@ -82,10 +79,20 @@ def sort_contours(contours, cm_arr):
     return
 
 
-display_image("", unlit)
+unlit = cv2.imread('./imgs/unlit4.jpeg')
+lit = cv2.imread('./imgs/lit4.jpeg')
+display_image("", lit)
 
-cut_unlit = unlit[LOWER_LEFT_Y: LOWER_LEFT_Y + HEIGHT, LOWER_LEFT_X: LOWER_LEFT_X + WIDTH]
-cut_lit = lit[LOWER_LEFT_Y: LOWER_LEFT_Y + HEIGHT, LOWER_LEFT_X: LOWER_LEFT_X + WIDTH]
-gray_cut_lit = cv2.cvtColor(cut_unlit, cv2.COLOR_BGR2GRAY)
+b,g,r = cv2.split(lit)
+#display_image("", b)
+#display_image("", g)
+#display_image("", r)
 
-find_leds_positions(gray_cut_lit)
+
+cut_unlit = unlit[LEFT_Y: LEFT_Y + HEIGHT, LEFT_X: LEFT_X + WIDTH]
+cut_lit = r[LEFT_Y: LEFT_Y + HEIGHT, LEFT_X: LEFT_X + WIDTH]
+#display_image("", cut_unlit)
+display_image("", cut_lit)
+#gray_cut_lit = cv2.cvtColor(cut_lit, cv2.COLOR_BGR2GRAY)
+
+find_leds_positions(cut_lit)
