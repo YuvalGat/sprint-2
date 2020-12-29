@@ -1,6 +1,7 @@
 import cv2
 from PIL import Image
 
+
 #
 # def find_color_cont(img, x, y):
 #     print(img[x, y])
@@ -17,23 +18,29 @@ def display_image(name, image):
 
 
 def find_red_spot(img):
+    # display_image('', img)
     blue, green, red = cv2.split(img)
+    # display_image('', red)
     red[green > 50] = 0
     red[blue > 50] = 0
+    # display_image('', red)
     ret, red = cv2.threshold(red, 100, 255, cv2.THRESH_BINARY)
     all_contours, h = cv2.findContours(red, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
     copy = cv2.cvtColor(red.copy(), cv2.COLOR_GRAY2BGR)
     max = []
     for c in all_contours:
         x, y, w, h = cv2.boundingRect(c)
-        cv2.rectangle(copy, (x, y), (x + w, y + h), (255,0,0), 1)
+        cv2.rectangle(copy, (x, y), (x + w, y + h), (255, 0, 0), 1)
         if len(c) > len(max):
             max = c
     M = cv2.moments(max)
+    # display_image('', copy)
     cy = int(M['m01'] / M['m00'])
     cx = int(M['m10'] / M['m00'])
-    return cx - 75, cy + 40, 150, 380
+    return cx - 75, cy + 55, 150, 380
 
 
-# img = cv2.imread('redtop2.jpeg')
-# find_red_spot(img)
+# img = cv2.imread('./imgs/unlit_all9.jpg')
+# x, y, w, h = find_red_spot(img)
+# img_cut = img[y:y + h, x:x + w]
+# display_image('', img_cut)

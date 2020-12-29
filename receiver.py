@@ -7,6 +7,7 @@ import numpy as np
 from led_detection import find_on_leds
 from compare_leds import compare_leds
 from coder import *
+from find_colors import *
 
 
 class Camera:
@@ -57,40 +58,52 @@ class Camera:
 
 
 def main():
-    cam = Camera("http://" + argv[1] + ":5000/video_feed")
-    fourcc = cv2.VideoWriter_fourcc(*'XVID')
-    file_name = uuid.uuid4()
-    out = cv2.VideoWriter(f'{file_name}.mp4', fourcc, 20.0, (640, 480))
-    led_coords = find_on_leds(cv2.imread("constant_leds.jpeg"))
-    top_led_coord = led_coords[0]  # sorted(led_coords, key=lambda x: x[1])[0]
-    print("Camera is alive?: " + str(cam.p.is_alive()))
+    # cam = Camera("http://" + argv[1] + ":5000/video_feed")
+    # fourcc = cv2.VideoWriter_fourcc(*'XVID')
+    # file_name = uuid.uuid4()
+    # out = cv2.VideoWriter(f'{file_name}.mp4', fourcc, 20.0, (640, 480))
+    cap = cv2.VideoCapture('trimmed1.mp4')
+
+    # print("Camera is alive?: " + str(cam.p.is_alive()))
     charbit_arr = []
     top_led_on = True
-    while True:
-        frame = cam.get_frame()
-        top_led = frame[top_led_coord[0] - 10: top_led_coord[0] + 10, top_led_coord[1] - 10: top_led_coord[1] + 10]
+    x, y, w, h = 232, 174, 30, 170
+    r, on = cap.read()
+    led_coords = sorted(find_on_leds(on, y, h, x, w), key=lambda x: x[1], reverse=True)
+    top_led_coord = led_coords[0]  # sorted(led_coords, key=lambda x: x[1])[0]
+    print(led_coords)
+    print(top_led_coord)
+    while cap.isOpened():
+        ret, frame = cap.read()
+        if frame is None:
+            break
+        top_led = frame[top_led_coord[0] - 1: top_led_coord[0] + 1, top_led_coord[1] - 1: top_led_coord[1] + 1]
         b, g, r = cv2.split(top_led)
-        # cv2.imshow("", b)
-        # cv2.imshow("", g)
-        # cv2.imshow("", r)
+        # print()
+        # # cv2.imshow("", b)
+        # # cv2.imshow("", g)
+        # # cv2.imshow("", r)
         top_led_before = top_led_on
-        top_led_on = (np.average(r) > 200 and np.average(g) + np.average(b) < 80)
+        top_led_on = np.average(r) > 100
         if top_led_before != top_led_on:
-            leds_current = find_on_leds(frame)
+            print('HERE')
+            leds_current = find_on_leds(frame, y, h, x, w)
             character = compare_leds(led_coords, leds_current)
+            print(character)
+            print(decoder([character]))
             if character == "0000000":
                 print(decoder(charbit_arr))
                 break
             charbit_arr.append(character)
-        out.write(frame)
-        cv2.imshow("Feed", frame)
+        # out.write(frame)
+        # cv2.imshow("Feed", frame)
         key = cv2.waitKey(1)
         if key == 13:  # 13 is the Enter Key
             break
 
     cv2.destroyAllWindows()
-    cam.end()
-    out.release()
+    # cam.end()
+    # out.release()
 
 
 if __name__ == '__main__':
