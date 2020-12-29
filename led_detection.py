@@ -1,11 +1,13 @@
 import cv2
 import math
+from find_colors import *
+
 
 # 420, 520, 200, 200
-LEFT_X = 370
-LEFT_Y = 630
-WIDTH = 220
-HEIGHT = 270
+# LEFT_X = 370
+# LEFT_Y = 630
+# WIDTH = 220
+# HEIGHT = 270
 
 
 def display_image(name, image):
@@ -75,6 +77,7 @@ def sort_contours(contours, cm_arr):
 
 def find_on_leds(image):
     b, g, r = cv2.split(image)
+    LEFT_X, LEFT_Y, WIDTH, HEIGHT = find_red_spot(image)
     cut_image = r[LEFT_Y: LEFT_Y + HEIGHT, LEFT_X: LEFT_X + WIDTH]
     arr = find_leds_positions(cut_image)
     return arr
