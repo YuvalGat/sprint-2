@@ -11,10 +11,6 @@ import sys
 #     arr = []
 #     for c in str:
 #         arr.append(char_to_bin(c))
-#         # arr.append(char_to_bin(c)[0:2])
-#         # arr.append(char_to_bin(c)[2:4])
-#         # arr.append(char_to_bin(c)[4:6])
-#         # arr.append(char_to_bin(c)[6:7]+"0")
 #     return arr
 
 
@@ -22,7 +18,7 @@ def file_to_bin(file_name):
     inp = open(file_name, 'r')
     # lines_bin = []
     # lines_bin += str_to_bin(inp.read())
-    return [c for c in inp.read()]
+    return [c for c in inp.read()].append('\0')
 
 
 def bin_to_char(bin):
@@ -42,6 +38,7 @@ def coder():
     for f in files:
         if '.txt' in f:
             return file_to_bin(f)
+    return None
 
 arr = coder()
 print(arr)
