@@ -27,20 +27,20 @@ def bin_to_char(bin):
     return chr(int(bin, 2))
 
 
-def bin_to_str(arr):
+def decoder(arr):
     str = "***\n"
     for bin in arr:
         str += bin_to_char(bin)
     return str + "\n***"
 
 
-def bin_from_dir():
+def coder():
     path = pathlib.Path().absolute()
     files = os.listdir(path)
     for f in files:
         if '.txt' in f:
             return file_to_bin(f)
 
-arr = bin_from_dir()
+arr = coder()
 print(arr)
-print(bin_to_str(arr))
+print(decoder(arr))
