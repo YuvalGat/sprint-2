@@ -3,24 +3,26 @@ import pathlib
 import sys
 
 
-def char_to_bin(c):
-    return "{:08b}".format(ord(c))
-
-
-def str_to_bin(str):
-    arr = []
-    for c in str:
-        arr.append(char_to_bin(c))
-    return arr
+# def char_to_bin(c):
+#     return "{:08b}".format(ord(c))
+#
+#
+# def str_to_bin(str):
+#     arr = []
+#     for c in str:
+#         arr.append(char_to_bin(c))
+#         # arr.append(char_to_bin(c)[0:2])
+#         # arr.append(char_to_bin(c)[2:4])
+#         # arr.append(char_to_bin(c)[4:6])
+#         # arr.append(char_to_bin(c)[6:7]+"0")
+#     return arr
 
 
 def file_to_bin(file_name):
     inp = open(file_name, 'r')
-    lines_bin = []
-    # for line in inp:
-    #     lines_bin += str_to_bin(line)
-    lines_bin += str_to_bin(inp.read())
-    return lines_bin
+    # lines_bin = []
+    # lines_bin += str_to_bin(inp.read())
+    return [c for c in inp.read()]
 
 
 def bin_to_char(bin):
@@ -43,4 +45,4 @@ def coder():
 
 arr = coder()
 print(arr)
-print(decoder(arr))
+# print(decoder(arr))
