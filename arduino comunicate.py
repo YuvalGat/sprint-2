@@ -8,9 +8,10 @@ WAIT_TIME = 0.1
 def open_arduino():
     ser = serial.Serial('COM6', 9600)  # opens communication with arduino
     time.sleep(1.6)
-    input()
 
     char_lst = coder.coder()
+    while char_lst is None:
+        char_lst = coder.coder()
     if len(char_lst) % 2 == 1:
         char_lst.append('\n')
 
